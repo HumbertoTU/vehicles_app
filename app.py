@@ -26,8 +26,14 @@ st.subheader('Visualización de los Datos de Vehículos')
 # Checkbox para decidir si mostrar el DataFrame
 show_data = st.checkbox('Mostrar datos de vehículos')
 
+# Mostrar texto pequeño con la aclaración
+st.markdown(
+    "Se muestra solo una muestra de la base de datos (primeros 5000 registros).",
+    unsafe_allow_html=True
+)
+
 # Si el checkbox está seleccionado, mostrar el DataFrame
 if show_data:
     # Mostrar todo el DataFrame con barras de desplazamiento
     # Ajusta 'height' según lo necesites para reducir el tamaño
-    st.dataframe(car_data, height=200)
+    st.dataframe(car_data.head(5000), height=200)
