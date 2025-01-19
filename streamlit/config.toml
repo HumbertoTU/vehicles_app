@@ -1,6 +1,7 @@
 [server]
 headless = true
 port = 10000
+baseUrlPath = "vehicles_app"
 
 [browser]
 serverAddress = "0.0.0.0"
