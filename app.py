@@ -37,3 +37,27 @@ if show_data:
     # Mostrar todo el DataFrame con barras de desplazamiento
     # Ajusta 'height' según lo necesites para reducir el tamaño
     st.dataframe(car_data.head(5000), height=200)
+
+# Título para la sección de histograma
+st.subheader('Visualización de Histograma')
+
+# Checkbox para mostrar el histograma
+show_histogram = st.checkbox('Mostrar histograma')
+
+# Si el checkbox está seleccionado, mostrar el histograma
+if show_histogram:
+    # Selección de la columna para el histograma
+    column = st.selectbox(
+        'Selecciona una columna para el histograma:', car_data.columns)
+
+    # Verificar si la columna seleccionada es numérica
+    if car_data[column].dtype in ['int64', 'float64']:
+        # Crear histograma interactivo
+        fig = px.histogram(car_data, x=column,
+                           title=f'Histograma de {column}', nbins=30)
+
+        # Mostrar el gráfico
+        st.plotly_chart(fig)
+    else:
+        st.write(
+            "Por favor selecciona una columna numérica para mostrar el histograma.")
