@@ -43,33 +43,52 @@ st.subheader('Visualización de Histograma')
 
 # Descripción de la sección
 st.write("""
-El histograma permite analizar la distribución de una variable numérica en el conjunto de datos. 
-Selecciona una columna para visualizar cómo se distribuyen sus valores.
+El histograma permite analizar la distribución de una variable numérica en el conjunto de datos, con la posibilidad de agrupar los valores por una categoría.
+Selecciona dos columnas: una numérica para el eje X y otra categórica para agrupar los datos.
 """)
 
 # Checkbox para mostrar el histograma
 show_histogram = st.checkbox('Mostrar histograma')
 
-# Si el checkbox está seleccionado, mostrar el histograma
+# Si el checkbox está seleccionado, mostrar las opciones y el gráfico
 if show_histogram:
-    # Filtrar las columnas numéricas
+    # Filtrar las columnas numéricas y categóricas
     numeric_columns = car_data.select_dtypes(
         include=['int64', 'float64']).columns
+    categorical_columns = car_data.select_dtypes(
+        include=['object', 'category']).columns
 
-    # Verificar si hay columnas numéricas disponibles
-    if len(numeric_columns) > 0:
-        # Selección de la columna para el histograma
-        column = st.selectbox(
-            'Selecciona una columna para el histograma:', numeric_columns)
+    # Verificar si hay columnas disponibles
+    if len(numeric_columns) > 0 and len(categorical_columns) > 0:
+        # Selección de la columna numérica para el histograma
+        hist_numeric_column = st.selectbox(
+            'Selecciona la columna numérica para el histograma (eje X):',
+            numeric_columns
+        )
 
-        # Crear histograma interactivo
-        fig = px.histogram(car_data, x=column,
-                           title=f'Histograma de {column}', nbins=30)
+        # Selección de la columna categórica para agrupar
+        hist_categorical_column = st.selectbox(
+            'Selecciona la columna categórica para agrupar (opcional):',
+            ['Ninguno'] + list(categorical_columns)
+        )
+
+        # Crear el histograma
+        hist_fig = px.histogram(
+            car_data,
+            x=hist_numeric_column,
+            color=hist_categorical_column if hist_categorical_column != 'Ninguno' else None,
+            nbins=30,  # Número de barras en el histograma
+            title=f'Histograma de: {hist_numeric_column}' + (
+                f' agrupado por: {hist_categorical_column}' if hist_categorical_column != 'Ninguno' else ''),
+            color_discrete_sequence=px.colors.qualitative.Set2,  # Paleta de colores
+            template='plotly_white'
+        )
 
         # Mostrar el gráfico
-        st.plotly_chart(fig)
+        st.plotly_chart(hist_fig)
     else:
-        st.write("No hay columnas numéricas disponibles en los datos.")
+        st.write(
+            "No hay suficientes columnas numéricas o categóricas disponibles para crear un histograma.")
 
 # Título para la sección de diagrama de dispersión
 st.subheader('Visualización de Diagrama de Dispersión')
