@@ -11,7 +11,7 @@ data_path = os.path.join(script_dir, 'notebooks', 'info_clean.csv')
 car_data = pd.read_csv(data_path)
 
 # Título de la app
-st.title('Aplicación de Análisis de Datos de Vehículos')
+st.title('Aplicación de Análisis de Datos de Vehículos Usados Vendidos')
 
 # Descripción breve del objetivo de la app
 st.write("""
@@ -19,8 +19,16 @@ Esta aplicación permite explorar y analizar un conjunto de datos sobre anuncios
 Puedes visualizar estadísticas descriptivas, crear gráficos interactivos y obtener información valiosa sobre los vehículos disponibles.
 """)
 
-# Título para la sección de visualización de datos
-st.subheader('Visualización de los Datos de Vehículos')
+# Título para la sección de visualización de los datos
+st.subheader('Exploración de los Datos de Vehículos')
+
+# Descripción de la sección
+st.write("""
+En esta sección puedes explorar una muestra de los datos de vehículos disponibles para la venta. El conjunto de datos 
+contiene información sobre las características de los vehículos, como la marca, el modelo, el año, el precio, el kilometraje, 
+y otros detalles importantes. Puedes interactuar con la tabla para visualizar los primeros 5000 registros y obtener una visión 
+general de los datos.
+""")
 
 
 # Checkbox para decidir si mostrar el DataFrame
@@ -131,3 +139,57 @@ if show_scatter:
     else:
         st.write(
             "No hay suficientes columnas numéricas disponibles para crear un diagrama de dispersión.")
+
+# Título para la sección de gráfico de relación entre marcas y tipos de vehículo
+st.subheader('Distribución de Vehículos por Marca y Tipo')
+
+# Descripción de la sección
+st.write("""
+Este gráfico muestra la cantidad total de vehículos disponibles para cada marca. Las barras están segmentadas por colores para 
+representar los diferentes tipos de vehículos (sedán, SUV, pickup, etc.), lo que permite visualizar cómo se distribuyen 
+los tipos de vehículos dentro de cada marca.
+""")
+
+
+# Checkbox para mostrar el gráfico
+show_brand_vehicle_chart = st.checkbox(
+    'Mostrar gráfico de relación entre marcas y tipos de vehículo')
+
+# Si el checkbox está seleccionado, mostrar las opciones y el gráfico
+if show_brand_vehicle_chart:
+    # Verificar si las columnas necesarias existen en el DataFrame
+    if 'brand' in car_data.columns and 'type' in car_data.columns:
+        # Filtrar filas con valores no nulos en las columnas necesarias
+        filtered_data = car_data.dropna(subset=['brand', 'type'])
+
+        # Agrupar datos por marca y tipo, y contar la cantidad de vehículos
+        grouped_data = filtered_data.groupby(
+            ['brand', 'type']).size().reset_index(name='count')
+
+        # Crear el gráfico de barras apiladas
+        brand_vehicle_fig = px.bar(
+            grouped_data,
+            x='brand',
+            y='count',
+            color='type',
+            title='Distribución Total de Vehículos por Marca y Tipo',
+            labels={'brand': 'Marca', 'count': 'Cantidad de Vehículos',
+                    'type': 'Tipo de Vehículo'},
+            color_discrete_sequence=px.colors.qualitative.Set2,  # Paleta de colores
+            template='plotly_white'
+        )
+
+        # Ajustar diseño del gráfico
+        brand_vehicle_fig.update_layout(
+            xaxis_title='Marca',
+            yaxis_title='Cantidad Total de Vehículos',
+            legend_title='Tipo de Vehículo',
+            bargap=0.2,  # Espaciado entre barras
+            height=600
+        )
+
+        # Mostrar el gráfico
+        st.plotly_chart(brand_vehicle_fig)
+    else:
+        st.write(
+            "El DataFrame no contiene las columnas necesarias ('brand' y 'type').")
