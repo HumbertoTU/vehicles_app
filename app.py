@@ -5,7 +5,7 @@ import streamlit as st
 
 # Configurar directorio de trabajo
 script_dir = os.path.dirname(os.path.abspath(__file__))
-data_path = os.path.join(script_dir, 'notebooks', 'vehicles_us.csv')
+data_path = os.path.join(script_dir, 'notebooks', 'info_clean.csv')
 
 # Cargar los datos
 car_data = pd.read_csv(data_path)
