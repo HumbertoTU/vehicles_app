@@ -46,12 +46,16 @@ show_histogram = st.checkbox('Mostrar histograma')
 
 # Si el checkbox está seleccionado, mostrar el histograma
 if show_histogram:
-    # Selección de la columna para el histograma
-    column = st.selectbox(
-        'Selecciona una columna para el histograma:', car_data.columns)
+    # Filtrar las columnas numéricas
+    numeric_columns = car_data.select_dtypes(
+        include=['int64', 'float64']).columns
 
-    # Verificar si la columna seleccionada es numérica
-    if car_data[column].dtype in ['int64', 'float64']:
+    # Verificar si hay columnas numéricas disponibles
+    if len(numeric_columns) > 0:
+        # Selección de la columna para el histograma
+        column = st.selectbox(
+            'Selecciona una columna para el histograma:', numeric_columns)
+
         # Crear histograma interactivo
         fig = px.histogram(car_data, x=column,
                            title=f'Histograma de {column}', nbins=30)
@@ -59,5 +63,4 @@ if show_histogram:
         # Mostrar el gráfico
         st.plotly_chart(fig)
     else:
-        st.write(
-            "Por favor selecciona una columna numérica para mostrar el histograma.")
+        st.write("No hay columnas numéricas disponibles en los datos.")
