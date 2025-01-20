@@ -41,6 +41,12 @@ if show_data:
 # Título para la sección de histograma
 st.subheader('Visualización de Histograma')
 
+# Descripción de la sección
+st.write("""
+El histograma permite analizar la distribución de una variable numérica en el conjunto de datos. 
+Selecciona una columna para visualizar cómo se distribuyen sus valores.
+""")
+
 # Checkbox para mostrar el histograma
 show_histogram = st.checkbox('Mostrar histograma')
 
@@ -64,3 +70,45 @@ if show_histogram:
         st.plotly_chart(fig)
     else:
         st.write("No hay columnas numéricas disponibles en los datos.")
+
+# Título para la sección de diagrama de dispersión
+st.subheader('Visualización de Diagrama de Dispersión')
+
+# Descripción de la sección
+st.write("""
+El diagrama de dispersión permite explorar la relación entre dos variables numéricas. 
+Selecciona las columnas que deseas analizar para generar un gráfico interactivo.
+""")
+
+# Checkbox para mostrar el diagrama de dispersión
+show_scatter = st.checkbox('Mostrar diagrama de dispersión')
+
+# Si el checkbox está seleccionado, mostrar las opciones y el gráfico
+if show_scatter:
+    # Filtrar las columnas numéricas
+    numeric_columns = car_data.select_dtypes(
+        include=['int64', 'float64']).columns
+
+    # Verificar si hay suficientes columnas numéricas disponibles
+    if len(numeric_columns) > 1:
+        # Selección de las columnas para el eje X e Y
+        x_column = st.selectbox(
+            'Selecciona la columna para el eje X:', numeric_columns)
+        y_column = st.selectbox(
+            'Selecciona la columna para el eje Y:', numeric_columns)
+
+        # Crear el diagrama de dispersión
+        scatter_fig = px.scatter(
+            car_data,
+            x=x_column,
+            y=y_column,
+            title=f'Diagrama de dispersión: {x_column} vs {y_column}',
+            color_continuous_scale='Viridis',
+            template='plotly_white'
+        )
+
+        # Mostrar el gráfico
+        st.plotly_chart(scatter_fig)
+    else:
+        st.write(
+            "No hay suficientes columnas numéricas disponibles para crear un diagrama de dispersión.")
