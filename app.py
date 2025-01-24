@@ -36,7 +36,7 @@ show_data = st.checkbox('Mostrar datos de vehículos')
 
 # Mostrar texto pequeño con la aclaración
 st.markdown(
-    "Se muestra solo una muestra de la base de datos (primeros 5000 registros).",
+    "Se visualiza una muestra de la base de datos (primeros 5000 registros).",
     unsafe_allow_html=True
 )
 
