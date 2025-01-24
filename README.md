@@ -1,5 +1,9 @@
-Configuración de los Gráficos
+Descripción de la Aplicación
 
+Esta aplicación interactiva está diseñada para explorar y analizar un conjunto de datos sobre vehículos usados en venta. Permite a los usuarios visualizar estadísticas descriptivas, crear gráficos interactivos y obtener información valiosa sobre los vehículos disponibles. Con una interfaz amigable y herramientas fáciles de usar, los usuarios pueden explorar distribuciones de precios, analizar relaciones entre distintas variables y descubrir patrones de interés, como la cantidad de vehículos disponibles por marca y tipo.
+
+
+Configuración de los Gráficos
 
 Este apartado explica las funcionalidades y configuraciones disponibles para cada gráfico 
 interactivo en la aplicación:
@@ -52,3 +56,8 @@ interactivo en la aplicación:
         -Edición de elementos visibles:
             -En el lado derecho del gráfico, aparece una columna que lista las marcas y tipos de vehículos disponibles.
             -Los usuarios pueden seleccionar o deseleccionar elementos específicos haciendo clic en ellos para ajustar dinámicamente los datos visibles en el gráfico.
+
+
+ENLACE PARA ABRIR LA APLICACIÓN WEB:
+
+https://vehicles-app-3x7u.onrender.com
